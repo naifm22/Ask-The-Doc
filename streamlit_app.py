@@ -29,13 +29,6 @@ Keep the answer concise and factual. Mention relevant chunk numbers in square br
 """.strip()
 
 
-def configured_api_key() -> str:
-    try:
-        return str(st.secrets.get("OPENAI_API_KEY", "")).strip()
-    except Exception:
-        return ""
-
-
 def clear_document_state() -> None:
     st.session_state.pop("vector_store", None)
     st.session_state.pop("index_key", None)
@@ -86,13 +79,12 @@ st.write(
 
 with st.sidebar:
     st.header("Settings")
-    stored_key = configured_api_key()
     entered_key = st.text_input(
         "OpenAI API key",
         type="password",
-        help="Leave blank to use OPENAI_API_KEY from Streamlit Secrets, if configured.",
+        help="Enter your own OpenAI API key. It is used only for the current session.",
     )
-    api_key = entered_key.strip() or stored_key
+    api_key = entered_key.strip()
     model = st.selectbox(
         "Answer model",
         options=["gpt-6-luna", "gpt-6.1-terra", "gpt-6.1-sol"],
@@ -101,8 +93,7 @@ with st.sidebar:
     )
     top_k = st.slider("Retrieved chunks", min_value=2, max_value=8, value=4)
     st.caption(f"Embeddings: `{EMBEDDING_MODEL}`")
-    if stored_key and not entered_key:
-        st.success("Using the API key configured in Streamlit Secrets.")
+    st.caption("Your API key is not stored by this application.")
 
 uploaded_file = st.file_uploader("Upload a text document", type=["txt"])
 
@@ -186,4 +177,3 @@ if "vector_store" in st.session_state:
 
 st.divider()
 st.caption("Uploaded text and vector indexes remain in the current Streamlit session.")
-
