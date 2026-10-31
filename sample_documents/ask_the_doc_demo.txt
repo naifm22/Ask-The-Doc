@@ -1,0 +1,10 @@
+Riverview College Responsible AI Pilot Policy
+
+Riverview College permits small artificial intelligence pilots when they have a named faculty sponsor, a documented educational purpose, and a defined end date. Pilot teams must identify the data they will use and may not upload student records, health information, passwords, or confidential research data to an external AI service.
+
+Before a pilot begins, the sponsor must complete a privacy review and record the model provider, expected users, estimated cost, and success measures. Students must be told when AI-generated material is used in instruction or assessment. Any output that could affect grades, admissions, financial aid, employment, or discipline must be reviewed by an authorized person before action is taken.
+
+A pilot may move into production only after the project owner documents test results, confirms accessibility, completes security and legal reviews, establishes human oversight, and receives written approval from the Information Technology Governance Committee. Production services must have a support owner, a spending limit, an incident response plan, and a process for periodically evaluating accuracy and bias.
+
+The college may suspend a pilot immediately if it exposes protected data, creates material harm, exceeds its approved budget, or produces unreliable results that cannot be corrected through reasonable safeguards.
+
