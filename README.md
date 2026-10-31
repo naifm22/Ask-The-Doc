@@ -9,26 +9,25 @@ Ask the Doc is a document question-answering application built with Streamlit, L
 
 ## Features
 
-- Upload UTF-8 `.txt` documents.
-- Validate documents up to 5 MB.
+- Upload UTF-8 `.txt` documents up to 5 MB.
 - Split documents into overlapping text chunks.
 - Generate embeddings with OpenAI.
 - Store and search embeddings using Chroma.
 - Retrieve document passages relevant to a question.
-- Generate answers grounded in the uploaded document.
-- Display chunk references and retrieved source passages.
+- Generate grounded answers with chunk references.
+- Display retrieved source passages.
 - Handle invalid API keys, rate limits, connection failures, and invalid files.
 
 ## How It Works
 
 1. The user uploads a text document.
-2. The application validates and divides the document into overlapping chunks.
-3. OpenAI generates an embedding for each chunk.
-4. Chroma stores the embeddings in a vector index.
-5. The user submits a question.
-6. The application retrieves the most relevant document chunks.
-7. OpenAI generates an answer using the retrieved context.
-8. The answer includes references to the relevant chunk numbers.
+2. The user enters their own OpenAI API key.
+3. The application divides the document into overlapping chunks.
+4. OpenAI generates an embedding for each chunk.
+5. Chroma stores the embeddings in a vector index.
+6. The user submits a question.
+7. The application retrieves the most relevant document chunks.
+8. OpenAI generates an answer grounded in the retrieved context.
 
 ## Technology Stack
 
@@ -43,12 +42,16 @@ Ask the Doc is a document question-answering application built with Streamlit, L
 
 ```text
 Ask-The-Doc/
-├── streamlit_app.py
+├── .streamlit/
+│   └── config.toml
+├── sample_documents/
+│   └── ask_the_doc_demo.txt
+├── .gitignore
+├── .python-version
 ├── app_core.py
-├── requirements.txt
 ├── README.md
-└── sample_documents/
-    └── ask_the_doc_demo.txt
+├── requirements.txt
+└── streamlit_app.py
 ```
 
 ## Local Setup
@@ -76,81 +79,53 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-Install the dependencies:
+Install the dependencies and start the application:
 
 ```bash
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-```
-
-Start the application:
-
-```bash
 streamlit run streamlit_app.py
 ```
 
-Open the local address displayed by Streamlit, normally:
+Open the local address displayed by Streamlit, normally `http://localhost:8501`.
 
-```text
-http://localhost:8501
-```
+## API Key
 
-## API Key Configuration
-
-The application supports a key entered directly through the Streamlit sidebar or a key configured with Streamlit Secrets.
-
-For local development, create:
-
-```text
-.streamlit/secrets.toml
-```
-
-Add the following setting:
-
-```toml
-OPENAI_API_KEY = "your-key-here"
-```
-
-For Streamlit Community Cloud, add the same setting through the application’s **Settings → Secrets** page.
-
-Never commit a real API key or `.streamlit/secrets.toml` to GitHub.
+Each user must enter their own OpenAI API key in the application's password field. The key is used to create document embeddings and generate answers during the current Streamlit session. It is not written to the repository or stored by the application.
 
 ## Usage
 
 1. Open the application.
-2. Upload a UTF-8 `.txt` document.
-3. Select the answer model and number of chunks to retrieve.
-4. Select **Process document**.
-5. Enter a question about the document.
-6. Select **Ask**.
-7. Review the answer and its retrieved source chunks.
+2. Enter your OpenAI API key in the sidebar.
+3. Upload a UTF-8 `.txt` document.
+4. Select the answer model and number of chunks to retrieve.
+5. Select **Process document**.
+6. Enter a question about the document.
+7. Select **Ask**.
+8. Review the answer and retrieved source chunks.
 
-A sample document is available at:
+A sample document is available at `sample_documents/ask_the_doc_demo.txt`.
 
-```text
-sample_documents/ask_the_doc_demo.txt
-```
-
-An example question for the sample document is:
+An example question is:
 
 > What controls are required before an AI pilot can move into production?
 
 ## Deployment
 
-The application can be deployed using Streamlit Community Cloud.
+The application can be deployed using Streamlit Community Cloud:
 
 1. Connect Streamlit Community Cloud to the GitHub repository.
 2. Select the `main` branch.
 3. Set the application entry point to `streamlit_app.py`.
 4. Configure Python 3.12 when the option is available.
-5. Add `OPENAI_API_KEY` through Streamlit Secrets if required.
-6. Deploy the application.
+5. Deploy the application.
 
-When an owner-provided API key is configured, requests made by public visitors consume credits from that OpenAI project. Appropriate project spending limits should be configured.
+No application-owned OpenAI API key is required because each visitor supplies their own key.
 
 ## Privacy and Security
 
-- API keys entered through the sidebar are not written to the repository.
+- API keys are entered through a password field and are not displayed.
+- API keys are not written to the repository or stored by the application.
 - Uploaded documents are treated as untrusted reference material.
 - The model is instructed to ignore commands contained within uploaded documents.
 - Answers are restricted to information supported by retrieved document chunks.
@@ -161,7 +136,8 @@ When an owner-provided API key is configured, requests made by public visitors c
 - Only UTF-8 `.txt` files are supported.
 - Documents are limited to 5 MB.
 - An internet connection is required.
-- Processing documents and answering questions consume OpenAI API credits.
+- Each user needs an OpenAI API key with available credits.
+- Processing documents and answering questions consume the user's OpenAI API credits.
 - Answer quality depends on the uploaded document and retrieved context.
 
 ## License
